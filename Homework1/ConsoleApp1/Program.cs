@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, Glib!");
+            Console.WriteLine("Hello, World!");
         }
     }
 }
