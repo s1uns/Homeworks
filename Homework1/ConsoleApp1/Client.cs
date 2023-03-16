@@ -8,14 +8,14 @@ namespace Homework1
 {
     public struct Client
     {
-        private string? _name;
-        private string? _phoneNum;
+        private string _name;
+        private string _phoneNum;
 
-        public string? Name { 
+        public string Name { 
             get => _name; 
             set => _name = value;
         }
-        public string? PhoneNum { 
+        public string PhoneNum { 
         get => _phoneNum;   
         set => _phoneNum = value; 
         }

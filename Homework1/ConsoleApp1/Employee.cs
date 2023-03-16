@@ -8,15 +8,15 @@ namespace Homework1
 {
     public struct Employee
     {
-       private string? _name;
-       private string? _position;
+       private string _name;
+       private string _position;
 
-       public string? Name
+       public string Name
        {
            get => _name;
            set => _name = value;
        }
-       public string? Position
+       public string Position
        {
            get => _position;
            set => _position = value;
