@@ -11,7 +11,7 @@ namespace Homework2
         public string? Name { get; set; }
         public string? Status { get; set; }
 
-        public Task(string name, string description, string status) 
+        public Task(string name, string status) 
         {
             Name = name;
             Status = status;
