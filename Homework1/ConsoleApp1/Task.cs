@@ -10,11 +10,14 @@ namespace Homework2
     {
         public string? Name { get; set; }
         public string? Status { get; set; }
+        public List<User> Users { get; }
 
-        public Task(string name, string status) 
+
+        public Task(string name, string status, List<User> users) 
         {
             Name = name;
             Status = status;
+            Users = users ?? new List<User>();
         }
     }
 }
