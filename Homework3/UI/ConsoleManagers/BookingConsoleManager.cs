@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using BLL.Abstractions.Interfaces;
 using Core.Models;
@@ -59,22 +61,80 @@ namespace UI.ConsoleManagers
 
         public async Task DisplayAllBookingsAsync()
         {
-            // Implementation for displaying all bookings
+            int i = 1;
+            var allBookings = await GetAllAsync();
+            foreach (Booking item in allBookings)
+            {
+                Console.WriteLine($"Booking №{i}:" + Environment.NewLine + $"Member: {item.Member.FirstName} {item.Member.LastName}" + Environment.NewLine + $"Class: {item.Class.Name}" + Environment.NewLine + $"Date: {item.Date}" + $"Is confirmed: " + (item.IsConfirmed ? "yes." : "no.") );
+                i++;
+            }
         }
 
         public async Task CreateBookingAsync()
         {
-            // Implementation for creating a new booking
+            var booking = new Booking();
+            booking.Id = Guid.NewGuid();
+            await Console.Out.WriteLineAsync("Choose member (enter number): ");
+            await _memberConsoleManager.DisplayAllMembersAsync();
+            var allMembers = await _memberConsoleManager.GetAllMembers();
+            booking.Member = allMembers[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose class (enter number): ");
+            await _memberConsoleManager.DisplayAllMembersAsync();
+            var allClasses = await _classConsoleManager.GetAllClasses();
+            booking.Class = allClasses[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose date of the booking (in dd/MM HH:mm format): ");
+            string dobString = Console.ReadLine();
+
+            DateTime dob;
+            if (DateTime.TryParseExact(dobString, "dd/MM HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob))
+            {
+                booking.Date = dob;
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format.");
+            }
+            booking.IsConfirmed = true;
+            await CreateAsync(booking);
         }
 
         public async Task UpdateBookingAsync()
         {
-            // Implementation for updating a booking
+            await DisplayAllBookingsAsync();
+            await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
+            var allBookings = await GetAllAsync();
+            var bookingsList = allBookings.ToList();
+            var booking = bookingsList[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose member (enter number): ");
+            await _memberConsoleManager.DisplayAllMembersAsync();
+            var allMembers = await _memberConsoleManager.GetAllMembers();
+            booking.Member = allMembers[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose class (enter number): ");
+            await _memberConsoleManager.DisplayAllMembersAsync();
+            var allClasses = await _classConsoleManager.GetAllClasses();
+            booking.Class = allClasses[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose date of the booking (in dd/MM HH:mm format): ");
+            string dobString = Console.ReadLine();
+
+            DateTime dob;
+            if (DateTime.TryParseExact(dobString, "dd/MM HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob))
+            {
+                booking.Date = dob;
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format.");
+            }
+            booking.IsConfirmed = true;
         }
 
         public async Task DeleteBookingAsync()
         {
-            // Implementation for deleting a booking
+            await DisplayAllBookingsAsync();
+            await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
+            var allBookings = await GetAllAsync();
+            var bookingsList = allBookings.ToList();
+            await DeleteAsync(bookingsList[Convert.ToInt32(Console.ReadLine()) - 1].Id);
         }
     }
 }

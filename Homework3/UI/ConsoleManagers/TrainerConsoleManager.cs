@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using BLL.Abstractions.Interfaces;
 using Core.Models;
@@ -53,22 +56,88 @@ namespace UI.ConsoleManagers
 
         public async Task DisplayAllTrainersAsync()
         {
-            // Implementation for displaying all trainers
+            int i = 1;
+            var allTrainers = await GetAllAsync();
+
+            foreach (Trainer item in allTrainers)
+            {
+                Console.WriteLine($"Trainer №{i}'s full name: {item.FirstName} {item.LastName}" + Environment.NewLine + $"Specialization: {item.Specialization}");
+                i++;
+            }
         }
 
         public async Task CreateTrainerAsync()
         {
-            // Implementation for creating a new trainer
+            var trainer = new Trainer();
+            trainer.Id = Guid.NewGuid();
+            await Console.Out.WriteLineAsync("Enter first name for the user: ");
+            trainer.FirstName = Console.ReadLine();
+            await Console.Out.WriteLineAsync("Enter last name for the user: ");
+            trainer.LastName = Console.ReadLine();
+            await Console.Out.WriteLineAsync("Enter specialization for the user: ");
+            trainer.Specialization = Console.ReadLine();
+            await CreateAsync(trainer);
         }
 
         public async Task UpdateTrainerAsync()
         {
-            // Implementation for updating a trainer
+            var allTrainers = await GetAllAsync();
+            var trainersList = allTrainers.ToList();
+            await DisplayAllTrainersAsync();
+
+            while (true)
+            {
+                await Console.Out.WriteLineAsync("Enter the number of the trainer: ");
+                var num = Convert.ToInt32(Console.ReadLine());
+                if (num < trainersList.Count)
+                {   var trainer = trainersList[num - 1];
+                    await Console.Out.WriteLineAsync("What to change: " + Environment.NewLine + "1 - first mame" + Environment.NewLine + "2 - last name" + "3 - specialization" + Environment.NewLine + "4 - exit");
+
+                    switch (Console.ReadLine())
+                    {
+                        case "1":
+                            await Console.Out.WriteLineAsync("Write new first name for the trainer: ");
+                            trainer.FirstName = Console.ReadLine();
+                            break;
+                        case "2":
+                            await Console.Out.WriteLineAsync("Write new last name for the trainer: ");
+                            trainer.LastName = Console.ReadLine();
+                            break;
+                        case "3":
+                            await Console.Out.WriteLineAsync("Write new specialization for the trainer: ");
+                            trainer.Specialization = Console.ReadLine();
+                            break;
+                        case "4":
+                            break;
+
+                    }
+                    break;
+                }
+                await Console.Out.WriteLineAsync("Wrong number, try again!");
+            }
         }
 
         public async Task DeleteTrainerAsync()
         {
-            // Implementation for deleting a trainer
+            var allTrainers = await GetAllAsync();
+            var trainersList = allTrainers.ToList();
+            await DisplayAllTrainersAsync();
+            while (true)
+            {
+                await Console.Out.WriteLineAsync("Enter the number of the trainer: ");
+                var num = Convert.ToInt32(Console.ReadLine());
+                if (num < trainersList.Count)
+                {
+                    await Service.Delete(trainersList[num - 1].Id);
+                    break;
+                }
+                await Console.Out.WriteLineAsync("Wrong number, try again!");
+            }
+        }
+        public async Task<List<Trainer>> GetAllTrainers()
+        {
+            var allTrainers = await GetAllAsync();
+            return allTrainers.ToList();
         }
     }
 }

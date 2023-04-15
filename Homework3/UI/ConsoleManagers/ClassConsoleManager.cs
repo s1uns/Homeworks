@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using BLL.Abstractions.Interfaces;
 using Core.Models;
@@ -9,8 +11,10 @@ namespace UI.ConsoleManagers
 {
     public class ClassConsoleManager : ConsoleManager<IClassService, FitnessClass>, IConsoleManager<FitnessClass>
     {
-        public ClassConsoleManager(IClassService classService) : base(classService)
+        private readonly TrainerConsoleManager _trainerConsoleManager;
+        public ClassConsoleManager(IClassService classService, TrainerConsoleManager trainerConsoleManager) : base(classService)
         {
+            _trainerConsoleManager = trainerConsoleManager;
         }
 
         public override async Task PerformOperationsAsync()
@@ -53,22 +57,97 @@ namespace UI.ConsoleManagers
         
         public async Task DisplayAllClassesAsync()
         {
-            // Implementation for displaying all classes
+            int i = 1;
+            var allClasses = await GetAllAsync();
+
+            foreach (FitnessClass item in allClasses)
+            {
+                Console.WriteLine($"Class №{i}'s Name: {item.Name}" + Environment.NewLine + $"Trainer: {item.Trainer.FirstName} {item.Trainer.LastName}" + Environment.NewLine + $"Date: {item.Date.ToString("yyyy-MM-dd HH:mm")}");
+                i++;
+            }
         }
 
         public async Task CreateClassAsync()
         {
-            // Implementation for creating a new class
+            var fitnessClass = new FitnessClass();
+            fitnessClass.Id = Guid.NewGuid();
+            await Console.Out.WriteLineAsync("Choose name for your class: ");
+            fitnessClass.Name = Console.ReadLine();
+            await Console.Out.WriteLineAsync("Choose type of your class: ");
+            fitnessClass.Type = Console.ReadLine();
+            await Console.Out.WriteLineAsync("Choose trainer (enter number): ");
+            await _trainerConsoleManager.DisplayAllTrainersAsync();
+            var allTrainers = await _trainerConsoleManager.GetAllTrainers();
+            fitnessClass.Trainer = allTrainers[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose date of the class: ");
+            string dobString = Console.ReadLine();
+
+            DateTime dob;
+            if (DateTime.TryParseExact(dobString, "dd/MM HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob))
+            {
+                fitnessClass.Date = dob;
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format.");
+            }
+            await CreateAsync(fitnessClass);
         }
 
         public async Task UpdateClassAsync()
         {
-            // Implementation for updating a class
+            await DisplayAllClassesAsync();
+            await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
+            var allClasses = await GetAllAsync();
+            var classesList = allClasses.ToList();
+            var fitnessClass = classesList[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose what to change: " + Environment.NewLine + "1 - name" + Environment.NewLine + "2 - type" + Environment.NewLine + "3 - trainer" + Environment.NewLine + "4 - date of the class");
+            switch(Console.ReadLine())
+            {
+                case "1":
+                    await Console.Out.WriteLineAsync("Choose name for your class: ");
+                    fitnessClass.Name = Console.ReadLine();
+                    break;
+                case "2":
+                    await Console.Out.WriteLineAsync("Choose type of your class: ");
+                    fitnessClass.Type = Console.ReadLine();
+                    break;
+                case "3":
+                    await Console.Out.WriteLineAsync("Choose trainer (enter number): ");
+                    await _trainerConsoleManager.DisplayAllTrainersAsync();
+                    var allTrainers = await _trainerConsoleManager.GetAllTrainers();
+                    fitnessClass.Trainer = allTrainers[Convert.ToInt32(Console.ReadLine()) - 1];
+                    break;
+                case "4":
+                    await Console.Out.WriteLineAsync("Choose date of the class (in dd/MM HH:mm format_: ");
+                    string dobString = Console.ReadLine();
+
+                    DateTime dob;
+                    if (DateTime.TryParseExact(dobString, "dd/MM HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob))
+                    {
+                        fitnessClass.Date = dob;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid date format.");
+                    }
+                    break;
+
+            }
         }
 
         public async Task DeleteClassAsync()
         {
-            // Implementation for deleting a class
+            await DisplayAllClassesAsync();
+            await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
+            var allClasses = await GetAllAsync();
+            var classesList = allClasses.ToList();
+            await DeleteAsync(classesList[Convert.ToInt32(Console.ReadLine()) - 1].Id);
+        }
+        public async Task<List<FitnessClass>> GetAllClasses()
+        {
+            var allClasses = await GetAllAsync();
+            return allClasses.ToList();
         }
     }
 }

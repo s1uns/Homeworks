@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BLL.Abstractions.Interfaces;
 using Core.Models;
@@ -9,26 +10,31 @@ namespace BLL.Services
 {
     public class MemberService : GenericService<Member>, IMemberService
     {
-        private readonly ISubscriptionService _subscriptionService;
+        private readonly IClassService _classService;
 
-        public MemberService(IRepository<Member> repository, ISubscriptionService subscriptionService) : base(repository)
+
+        public MemberService(IRepository<Member> repository, ISubscriptionService subscriptionService, IClassService classService) : base(repository)
         {
-            _subscriptionService = subscriptionService;
+            _classService = classService;
         }
 
         public async Task<Member> RegisterMember(Member member)
         {
-            throw new NotImplementedException();
+            await Add(member);
+            return member;
         }
 
         public async Task<List<Member>> GetActiveMembers()
         {
-            throw new NotImplementedException();
+            var allMembers = await GetAll();
+            return allMembers.Where(x => x.IsActive).ToList();
+
         }
 
         public async Task<List<Member>> GetMembersBySubscriptionType(string subscriptionType)
         {
-            throw new NotImplementedException();
+            var allMembers = await GetAll();
+            return allMembers.Where(x => x.SubscriptionType.ToString() == subscriptionType).ToList();
         }
 
         public async Task<List<Member>> GetMembersWithUpcomingRenewal(DateTime startDate, DateTime endDate)
@@ -38,12 +44,21 @@ namespace BLL.Services
 
         public async Task<bool> CheckMemberAttendance(Guid memberId, DateTime date)
         {
-            throw new NotImplementedException();
+            var allClasses = await _classService.GetAll();
+            var searchedClass = allClasses.Where(x => x.Date == date).First();
+            var member = await GetById(memberId);
+            return searchedClass.Attendees.Contains(member);
+
         }
 
         public async Task RecordMemberAttendance(Guid memberId, DateTime date)
         {
-            throw new NotImplementedException();
+            {
+                var allClasses = await _classService.GetAll();
+                var searchedClass = allClasses.Where(x => x.Date == date).First();
+                var member = await GetById(memberId);
+                searchedClass.Attendees.Add(member);
+            }
         }
     }
 }
