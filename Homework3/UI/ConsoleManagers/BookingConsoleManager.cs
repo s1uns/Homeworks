@@ -110,7 +110,7 @@ namespace UI.ConsoleManagers
             var allMembers = await _memberConsoleManager.GetAllMembers();
             booking.Member = allMembers[Convert.ToInt32(Console.ReadLine()) - 1];
             await Console.Out.WriteLineAsync("Choose class (enter number): ");
-            await _memberConsoleManager.DisplayAllMembersAsync();
+            await _classConsoleManager.DisplayAllClassesAsync();
             var allClasses = await _classConsoleManager.GetAllClasses();
             booking.Class = allClasses[Convert.ToInt32(Console.ReadLine()) - 1];
             await Console.Out.WriteLineAsync("Choose date of the booking (in dd/MM HH:mm format): ");
