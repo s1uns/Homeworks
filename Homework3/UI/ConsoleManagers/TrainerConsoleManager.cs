@@ -81,16 +81,15 @@ namespace UI.ConsoleManagers
 
         public async Task UpdateTrainerAsync()
         {
-            var allTrainers = await GetAllAsync();
-            var trainersList = allTrainers.ToList();
+            var allTrainers = (await GetAllAsync()).ToList();
             await DisplayAllTrainersAsync();
 
             while (true)
             {
                 await Console.Out.WriteLineAsync("Enter the number of the trainer: ");
-                var num = Convert.ToInt32(Console.ReadLine());
-                if (num < trainersList.Count)
-                {   var trainer = trainersList[num - 1];
+                var num = await tryToParse(Console.ReadLine());
+                if (num < allTrainers.Count)
+                {   var trainer = allTrainers[num - 1];
                     await Console.Out.WriteLineAsync("What to change: " + Environment.NewLine + "1 - first mame" + Environment.NewLine + "2 - last name" + "3 - specialization" + Environment.NewLine + "4 - exit");
 
                     switch (Console.ReadLine())
@@ -119,16 +118,15 @@ namespace UI.ConsoleManagers
 
         public async Task DeleteTrainerAsync()
         {
-            var allTrainers = await GetAllAsync();
-            var trainersList = allTrainers.ToList();
+            var allTrainers = (await GetAllAsync()).ToList();
             await DisplayAllTrainersAsync();
             while (true)
             {
                 await Console.Out.WriteLineAsync("Enter the number of the trainer: ");
-                var num = Convert.ToInt32(Console.ReadLine());
-                if (num < trainersList.Count)
+                var num = await tryToParse(Console.ReadLine());
+                if (num < allTrainers.Count)
                 {
-                    await Service.Delete(trainersList[num - 1].Id);
+                    await Service.Delete(allTrainers[num - 1].Id);
                     break;
                 }
                 await Console.Out.WriteLineAsync("Wrong number, try again!");
@@ -136,8 +134,7 @@ namespace UI.ConsoleManagers
         }
         public async Task<List<Trainer>> GetAllTrainers()
         {
-            var allTrainers = await GetAllAsync();
-            return allTrainers.ToList();
+            return (await GetAllAsync()).ToList();
         }
     }
 }

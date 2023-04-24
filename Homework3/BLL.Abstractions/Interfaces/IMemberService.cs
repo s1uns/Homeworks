@@ -21,8 +21,5 @@ namespace BLL.Abstractions.Interfaces
         
         Task<List<Member>> GetMembersWithUpcomingRenewal(DateTime startDate, DateTime endDate);
         
-        Task<bool> CheckMemberAttendance(Guid memberId, DateTime date);
-        
-        Task RecordMemberAttendance(Guid memberId, DateTime date);
     }
 }

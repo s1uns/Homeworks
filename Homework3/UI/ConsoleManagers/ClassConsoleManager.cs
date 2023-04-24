@@ -78,7 +78,7 @@ namespace UI.ConsoleManagers
             await Console.Out.WriteLineAsync("Choose trainer (enter number): ");
             await _trainerConsoleManager.DisplayAllTrainersAsync();
             var allTrainers = await _trainerConsoleManager.GetAllTrainers();
-            fitnessClass.Trainer = allTrainers[Convert.ToInt32(Console.ReadLine()) - 1];
+            fitnessClass.Trainer = allTrainers[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose date of the class: ");
             string dobString = Console.ReadLine();
 
@@ -97,10 +97,9 @@ namespace UI.ConsoleManagers
         public async Task UpdateClassAsync()
         {
             await DisplayAllClassesAsync();
-            await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
-            var allClasses = await GetAllAsync();
-            var classesList = allClasses.ToList();
-            var fitnessClass = classesList[Convert.ToInt32(Console.ReadLine()) - 1];
+            await Console.Out.WriteLineAsync("Choose the class to change (enter the number): ");
+            var allClasses = (await GetAllAsync()).ToList();
+            var fitnessClass = allClasses[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose what to change: " + Environment.NewLine + "1 - name" + Environment.NewLine + "2 - type" + Environment.NewLine + "3 - trainer" + Environment.NewLine + "4 - date of the class");
             switch(Console.ReadLine())
             {
@@ -116,7 +115,7 @@ namespace UI.ConsoleManagers
                     await Console.Out.WriteLineAsync("Choose trainer (enter number): ");
                     await _trainerConsoleManager.DisplayAllTrainersAsync();
                     var allTrainers = await _trainerConsoleManager.GetAllTrainers();
-                    fitnessClass.Trainer = allTrainers[Convert.ToInt32(Console.ReadLine()) - 1];
+                    fitnessClass.Trainer = allTrainers[await tryToParse(Console.ReadLine())];
                     break;
                 case "4":
                     await Console.Out.WriteLineAsync("Choose date of the class (in dd/MM HH:mm format_: ");
@@ -140,14 +139,12 @@ namespace UI.ConsoleManagers
         {
             await DisplayAllClassesAsync();
             await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
-            var allClasses = await GetAllAsync();
-            var classesList = allClasses.ToList();
-            await DeleteAsync(classesList[Convert.ToInt32(Console.ReadLine()) - 1].Id);
+            var allClasses = (await GetAllAsync()).ToList();
+            await DeleteAsync(allClasses[await tryToParse(Console.ReadLine())].Id);
         }
         public async Task<List<FitnessClass>> GetAllClasses()
         {
-            var allClasses = await GetAllAsync();
-            return allClasses.ToList();
+            return (await GetAllAsync()).ToList();
         }
     }
 }

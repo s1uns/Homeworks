@@ -43,36 +43,29 @@ namespace BLL.Services
         {
             var user = await GetById(userId);
             user.PasswordHash = Hash(newPassword);
+            await Update(userId, user);
         }
 
-        public async Task ResetPassword(Guid userId)
+        public async Task ResetPassword(Guid userId, string newPassword)
         {   
-            var user = await GetById(userId);
-            await Console.Out.WriteLineAsync("Enter the old password: ");
-            if(user.PasswordHash == Hash(Console.ReadLine()))
-            {
-                await Console.Out.WriteAsync("Enter the new password: ");
-                await UpdatePassword(userId, Console.ReadLine());
-                return;
-            }
-            else
-            {
-                throw new Exception($"You entered the wrong password :(");
-            }
+            await UpdatePassword(userId, Hash(newPassword));
+            
         }
 
         public async Task LockUser(Guid userId)
         {
             var user = await GetById(userId);
             user.IsLocked = true;
+            await Update(userId, user);
         }
 
         public async Task UnlockUser(Guid userId)
         {
             var user = await GetById(userId);
             user.IsLocked = false;
+            await Update(userId, user);
         }
-        public string Hash(string input)
+        private string Hash(string input)
         {
             using (SHA256 sha256 = SHA256.Create())
             {

@@ -21,5 +21,9 @@ namespace BLL.Abstractions.Interfaces
         Task<List<FitnessClass>> GetClassesByTrainer(Guid trainerId);
         
         Task AddAttendeeToClass(Guid classId, Guid memberId);
+        Task<bool> CheckMemberAttendance(Guid memberId, DateTime date);
+
+        Task RecordMemberAttendance(Guid memberId, DateTime date);
+        Task AssignTrainerToClass(Guid trainerId, Guid classId);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using BLL.Abstractions.Interfaces;
+using Core.Enums;
 using Core.Models;
 using DAL.Abstractions.Interfaces;
 
@@ -38,13 +39,13 @@ namespace BLL.Services
             var subscription = await GetById(subscriptionId);
             int DaysToAdd = 0;
 
-            switch ((int)subscription.Type)
+            switch (subscription.Type)
             {
-                case 0:
+                case SubscriptionType.Monthly:
                     DaysToAdd = 31; break;
-                case 1:
+                case SubscriptionType.Quarterly:
                     DaysToAdd = 93; break;
-                case 2:
+                case SubscriptionType.Annual:
                     DaysToAdd = 365; break;
             }
             subscription.StartDate = DateTime.Now;

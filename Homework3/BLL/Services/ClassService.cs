@@ -52,5 +52,35 @@ namespace BLL.Services
             var member = await _memberService.GetById(memberId);
             fitnessClass.Attendees.Add(member);
         }
+        public async Task<bool> CheckMemberAttendance(Guid memberId, DateTime date)
+        {
+            var allMembers = await _memberService.GetAll();
+            var member = allMembers.Where(x => x.Id == memberId).First();
+            var allClasses = await GetAll();
+            var searchedClass = allClasses.Where(x => x.Date == date).First();
+            return searchedClass.Attendees.Contains(member);
+
+        }
+
+        public async Task RecordMemberAttendance(Guid memberId, DateTime date)
+        {
+            {
+                var allMembers = await _memberService.GetAll();
+                var member = allMembers.Where(x => x.Id == memberId).First();
+                var allClasses = await GetAll();
+                var searchedClass = allClasses.Where(x => x.Date == date).First();
+                searchedClass.Attendees.Add(member);
+            }
+        }
+
+        public async Task AssignTrainerToClass(Guid trainerId, Guid classId)
+        {
+            var allTrainers = await _trainerService.GetAll();
+            var trainer = allTrainers.Where(x => x.Id == trainerId).First();
+            var searchedClass = await GetById(classId);
+            searchedClass.Trainer = trainer;
+            await Update(classId, searchedClass);
+
+        }
     }
 }

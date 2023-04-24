@@ -10,11 +10,9 @@ namespace BLL.Services
 {
     public class TrainerService : GenericService<Trainer>, ITrainerService
     {
-        private readonly IClassService _classService;
-        public TrainerService(IRepository<Trainer> repository, IClassService classService)
+        public TrainerService(IRepository<Trainer> repository)
             : base(repository)
         {
-            _classService = classService;
         }
 
         public async Task<Trainer> AddTrainer(Trainer trainer)
@@ -40,13 +38,6 @@ namespace BLL.Services
             return trainer.AvailableDates.Where(x  => x.Date == date && x.TimeOfDay >= startTime && x.TimeOfDay <= endTime).Any();
 
 
-        }
-
-        public async Task AssignTrainerToClass(Guid trainerId, Guid classId)
-        {
-            var trainer = await GetById(trainerId);
-            var fitnesClass = await _classService.GetById(classId);
-            fitnesClass.Trainer = trainer;
         }
     }
 }

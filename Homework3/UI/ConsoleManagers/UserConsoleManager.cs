@@ -63,7 +63,7 @@ namespace UI.ConsoleManagers
             var allUsers = await GetAllAsync();
             foreach (User item in allUsers)
             {
-                Console.WriteLine($"User №{i}'s username: {item.Username}" + Environment.NewLine + $"Role: {item.Role}" + $"Is locked: " + (item.IsLocked ? "yes." : "no."));
+                Console.WriteLine($"User №{i}'s username: {item.Username}" + Environment.NewLine + $"Role: {item.Role}" + Environment.NewLine + $"Is locked: " + (item.IsLocked ? "yes." : "no."));
                 i++;
             }
         }
@@ -126,7 +126,17 @@ namespace UI.ConsoleManagers
                         await Console.Out.WriteLineAsync("Enter new username: ");
                         user.Username = Console.ReadLine(); break;
                     case "2":
-                        await Service.ResetPassword(user.Id);
+                        await Console.Out.WriteLineAsync("Enter the old password: ");
+                        if (user.PasswordHash == Hash(Console.ReadLine()))
+                        {
+                            await Console.Out.WriteAsync("Enter the new password: ");
+                            await Service.ResetPassword(user.Id, Console.ReadLine());
+                            return;
+                        }
+                        else
+                        {
+                            throw new Exception($"You entered the wrong password :(");
+                        }
                         break;
                     case "3":
                         await Console.Out.WriteLineAsync("Choose the role: " + Environment.NewLine + "1 - Admin" + Environment.NewLine + "2 - Trainer" + Environment.NewLine + "3 - Member" + Environment.NewLine + "4 - exit");

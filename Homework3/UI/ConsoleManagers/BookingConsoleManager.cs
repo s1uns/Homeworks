@@ -65,7 +65,7 @@ namespace UI.ConsoleManagers
             var allBookings = await GetAllAsync();
             foreach (Booking item in allBookings)
             {
-                Console.WriteLine($"Booking №{i}:" + Environment.NewLine + $"Member: {item.Member.FirstName} {item.Member.LastName}" + Environment.NewLine + $"Class: {item.Class.Name}" + Environment.NewLine + $"Date: {item.Date}" + $"Is confirmed: " + (item.IsConfirmed ? "yes." : "no.") );
+                Console.WriteLine($"Booking №{i}:" + Environment.NewLine + $"Member: {item.Member.FirstName} {item.Member.LastName}" + Environment.NewLine + $"Class: {item.Class.Name}" + Environment.NewLine + $"Date: {item.Date}" + $"Is confirmed: " + Environment.NewLine + (item.IsConfirmed ? "yes." : "no.") );
                 i++;
             }
         }
@@ -77,11 +77,11 @@ namespace UI.ConsoleManagers
             await Console.Out.WriteLineAsync("Choose member (enter number): ");
             await _memberConsoleManager.DisplayAllMembersAsync();
             var allMembers = await _memberConsoleManager.GetAllMembers();
-            booking.Member = allMembers[Convert.ToInt32(Console.ReadLine()) - 1];
+            booking.Member = allMembers[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose class (enter number): ");
-            await _memberConsoleManager.DisplayAllMembersAsync();
+            await _classConsoleManager.DisplayAllClassesAsync();
             var allClasses = await _classConsoleManager.GetAllClasses();
-            booking.Class = allClasses[Convert.ToInt32(Console.ReadLine()) - 1];
+            booking.Class = allClasses[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose date of the booking (in dd/MM HH:mm format): ");
             string dobString = Console.ReadLine();
 
@@ -102,17 +102,16 @@ namespace UI.ConsoleManagers
         {
             await DisplayAllBookingsAsync();
             await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
-            var allBookings = await GetAllAsync();
-            var bookingsList = allBookings.ToList();
-            var booking = bookingsList[Convert.ToInt32(Console.ReadLine()) - 1];
+            var allBookings = (await GetAllAsync()).ToList();
+            var booking = allBookings[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose member (enter number): ");
             await _memberConsoleManager.DisplayAllMembersAsync();
             var allMembers = await _memberConsoleManager.GetAllMembers();
-            booking.Member = allMembers[Convert.ToInt32(Console.ReadLine()) - 1];
+            booking.Member = allMembers[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose class (enter number): ");
             await _classConsoleManager.DisplayAllClassesAsync();
             var allClasses = await _classConsoleManager.GetAllClasses();
-            booking.Class = allClasses[Convert.ToInt32(Console.ReadLine()) - 1];
+            booking.Class = allClasses[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("Choose date of the booking (in dd/MM HH:mm format): ");
             string dobString = Console.ReadLine();
 
@@ -132,9 +131,10 @@ namespace UI.ConsoleManagers
         {
             await DisplayAllBookingsAsync();
             await Console.Out.WriteLineAsync("Choose the class to delete (enter the number): ");
-            var allBookings = await GetAllAsync();
-            var bookingsList = allBookings.ToList();
-            await DeleteAsync(bookingsList[Convert.ToInt32(Console.ReadLine()) - 1].Id);
+            var allBookings = (await GetAllAsync()).ToList();
+            await DeleteAsync(allBookings[await tryToParse(Console.ReadLine())].Id);
         }
+
+        
     }
 }

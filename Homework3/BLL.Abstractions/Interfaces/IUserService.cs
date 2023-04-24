@@ -22,7 +22,7 @@ namespace BLL.Abstractions.Interfaces
         
         Task UpdatePassword(Guid userId, string newPassword);
         
-        Task ResetPassword(Guid userId);
+        Task ResetPassword(Guid userId, string newPassword);
         
         Task LockUser(Guid userId);
         

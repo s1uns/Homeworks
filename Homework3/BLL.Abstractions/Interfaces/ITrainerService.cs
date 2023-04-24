@@ -20,6 +20,5 @@ namespace BLL.Abstractions.Interfaces
         
         Task<bool> CheckTrainerAvailability(Guid trainerId, DateTime date, TimeSpan startTime, TimeSpan endTime);
         
-        Task AssignTrainerToClass(Guid trainerId, Guid classId);
     }
 }

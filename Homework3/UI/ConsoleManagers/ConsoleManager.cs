@@ -107,5 +107,18 @@ namespace UI.ConsoleManagers
                 Console.WriteLine($"Error in DeleteAsync: {ex.Message}");
             }
         }
+
+        public async Task<int> tryToParse(string input)
+        {
+            if (int.TryParse(input, out int num))
+            {
+                return num - 1;
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync("Incorrect value, authomatically returned zero");
+                return 0;
+            }
+        }
     }
 }

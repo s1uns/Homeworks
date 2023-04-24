@@ -10,12 +10,11 @@ namespace BLL.Services
 {
     public class MemberService : GenericService<Member>, IMemberService
     {
-        private readonly IClassService _classService;
 
 
-        public MemberService(IRepository<Member> repository, ISubscriptionService subscriptionService, IClassService classService) : base(repository)
+        public MemberService(IRepository<Member> repository/*, ISubscriptionService subscriptionService, IClassService classService*/) : base(repository)
         {
-            _classService = classService;
+            /*_classService = classService;*/
         }
 
         public async Task<Member> RegisterMember(Member member)
@@ -39,26 +38,8 @@ namespace BLL.Services
 
         public async Task<List<Member>> GetMembersWithUpcomingRenewal(DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> CheckMemberAttendance(Guid memberId, DateTime date)
-        {
-            var allClasses = await _classService.GetAll();
-            var searchedClass = allClasses.Where(x => x.Date == date).First();
-            var member = await GetById(memberId);
-            return searchedClass.Attendees.Contains(member);
-
-        }
-
-        public async Task RecordMemberAttendance(Guid memberId, DateTime date)
-        {
-            {
-                var allClasses = await _classService.GetAll();
-                var searchedClass = allClasses.Where(x => x.Date == date).First();
-                var member = await GetById(memberId);
-                searchedClass.Attendees.Add(member);
-            }
+            var allMembers = await GetAll();
+            return allMembers.Where(x => x.SubscriptionStartDate ==  startDate && x.SubscriptionEndDate == endDate).ToList();
         }
     }
 }

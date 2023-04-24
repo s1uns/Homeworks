@@ -54,6 +54,7 @@ namespace BLL.Services
         {
             var booking = await GetById(bookingId);
             booking.IsConfirmed = true;
+            await Update(bookingId, booking);
         }
     }
 }

@@ -96,17 +96,17 @@ namespace UI.ConsoleManagers
 
         public async Task UpdateMemberAsync()
         {
-            var allMembers = await GetAllAsync();
-            var memberList = allMembers.ToList();
+            var allMembers = (await GetAllAsync()).ToList();
             await DisplayAllMembersAsync();
 
             while (true)
             {
                 await Console.Out.WriteLineAsync("Enter the number of the trainer: ");
-                var num = Convert.ToInt32(Console.ReadLine());
-                if (num < memberList.Count)
+                int num;
+                int.TryParse(Console.ReadLine(), out num);
+                if (num < allMembers.Count)
                 {
-                    var member = memberList[num - 1];
+                    var member = allMembers[num - 1];
                     await Console.Out.WriteLineAsync("What to change: " + Environment.NewLine + "1 - first mame" + Environment.NewLine + "2 - last name" + "3 - date of birth" + Environment.NewLine + "4 - Email" + Environment.NewLine + "5 - phone number" + Environment.NewLine + "6 - subscription type" + Environment.NewLine + "7 - make the member active/inactive" + Environment.NewLine + "8 - exit");
 
                     switch (Console.ReadLine())
@@ -162,16 +162,16 @@ namespace UI.ConsoleManagers
         }
         public async Task DeleteMemberAsync()
         {
-            var allMembers = await GetAllAsync();
-            var memberList = allMembers.ToList();
+            var allMembers = (await GetAllAsync()).ToList();
             await DisplayAllMembersAsync();
             while (true)
             {
                 await Console.Out.WriteLineAsync("Enter the number of the member: ");
-                var num = Convert.ToInt32(Console.ReadLine());
-                if (num < memberList.Count)
+                int num;
+                int.TryParse(Console.ReadLine(), out num);
+                if (num < allMembers.Count)
                 {
-                    await Service.Delete(memberList[num - 1].Id);
+                    await Service.Delete(allMembers[num - 1].Id);
                     break;
                 }
                 await Console.Out.WriteLineAsync("Wrong number, try again!");
@@ -206,8 +206,7 @@ namespace UI.ConsoleManagers
         }
         public async Task<List<Member>> GetAllMembers()
         {
-            var allMembers = await GetAllAsync();
-            return allMembers.ToList();
+            return (await GetAllAsync()).ToList();
         }
     }
 }

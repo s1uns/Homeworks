@@ -100,7 +100,7 @@ namespace UI.ConsoleManagers
                 Console.WriteLine($"№{1}: {item.FirstName} {item.LastName} ({item.Email})");
                 i++;
             }
-            subscription.Member = membersForChoosing[Convert.ToInt32(Console.ReadLine()) - 1];
+            subscription.Member = membersForChoosing[await tryToParse(Console.ReadLine())];
             subscription.StartDate = DateTime.Now;
             subscription.EndDate = DateTime.Now.AddDays(daysToAdd);
             subscription.IsActive = true;
@@ -110,10 +110,9 @@ namespace UI.ConsoleManagers
 
         public async Task UpdateSubscriptionAsync()
         {
-            var allSubscriptions = await GetAllAsync();
-            var subscriptionsList = allSubscriptions.ToList();
+            var allSubscriptions = (await GetAllAsync()).ToList();
             await Console.Out.WriteLineAsync("Choose subscription to delete (enter the number): ");
-            var subscription = subscriptionsList[Convert.ToInt32(Console.ReadLine()) - 1];
+            var subscription = allSubscriptions[await tryToParse(Console.ReadLine())];
             await Console.Out.WriteLineAsync("What to change: " + Environment.NewLine + "1 - TypeOfSubscription" + Environment.NewLine + "2 - renew the subscription" + Environment.NewLine + "3 - make the subscription active/inactive" + Environment.NewLine + "4 - exit");
 
             switch (Console.ReadLine())
@@ -159,11 +158,10 @@ namespace UI.ConsoleManagers
 
         public async Task DeleteSubscriptionAsync()
         {
-            var allSubscriptions = await GetAllAsync();
-            var subscriptionsList = allSubscriptions.ToList();
+            var allSubscriptions = (await GetAllAsync()).ToList();
             await Console.Out.WriteLineAsync("Choose subscription to delete (enter the number): ");
             await DisplayAllSubscriptionsAsync();
-            await DeleteAsync(subscriptionsList[Convert.ToInt32(Console.ReadLine()) - 1].Id);
+            await DeleteAsync(allSubscriptions[await tryToParse(Console.ReadLine())].Id);
         }
     }
 }
