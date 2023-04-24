@@ -131,13 +131,13 @@ namespace UI.ConsoleManagers
                         {
                             await Console.Out.WriteAsync("Enter the new password: ");
                             await Service.ResetPassword(user.Id, Console.ReadLine());
-                            return;
+                            break;
                         }
                         else
                         {
                             throw new Exception($"You entered the wrong password :(");
                         }
-                        break;
+                        
                     case "3":
                         await Console.Out.WriteLineAsync("Choose the role: " + Environment.NewLine + "1 - Admin" + Environment.NewLine + "2 - Trainer" + Environment.NewLine + "3 - Member" + Environment.NewLine + "4 - exit");
 
