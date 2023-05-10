@@ -3,9 +3,9 @@
 namespace MapperLib
 
 {
-    public class Mapper
+    public static class Mapper
     {
-        public void MapTo<TStartingObject, TDestinyObject>(TStartingObject startingObject, TDestinyObject destinyObject)
+        public static void MapTo<TStartingObject, TDestinyObject>(this TStartingObject startingObject, TDestinyObject destinyObject)
         {
             var startingType = startingObject.GetType();
             var destinyType = destinyObject.GetType();

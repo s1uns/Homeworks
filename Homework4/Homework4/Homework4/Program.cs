@@ -1,4 +1,5 @@
 ﻿using Homework4.Models;
+using MapperLib;
 using ValidationLib;
 
 namespace Homework4
@@ -6,10 +7,10 @@ namespace Homework4
     public class Program
     {
         static void Main(string[] args)
-        {   var mapper = new MapperLib.Mapper();
+        {   ;
             var normalUser = new User("IlliaLoh", "MinecraftCreeper2004");
             var uimodel = new UIModel();
-            mapper.MapTo(normalUser, uimodel);
+            normalUser.MapTo(uimodel);
             Console.WriteLine(uimodel.UserName);
 
             normalUser.Validate();
