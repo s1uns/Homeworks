@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework4", "Homework4\Homework4.csproj", "{EEC8912F-901E-4E7C-A9ED-E259FEEB2434}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homework4", "Homework4\Homework4.csproj", "{EEC8912F-901E-4E7C-A9ED-E259FEEB2434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapperLib", "MapperLib\MapperLib.csproj", "{735F6E02-565E-4D45-8216-4CA3F94F2C95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapperLib", "MapperLib\MapperLib.csproj", "{735F6E02-565E-4D45-8216-4CA3F94F2C95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationLib", "ValidationLib\ValidationLib.csproj", "{24F60CC3-2C91-4D6C-8028-ACEA0954D987}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationLib", "ValidationLib\ValidationLib.csproj", "{24F60CC3-2C91-4D6C-8028-ACEA0954D987}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOwnValidationLib", "MyOwnVaidationLib\MyOwnValidationLib.csproj", "{970828CF-466E-43ED-9127-E8F1578FD234}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{24F60CC3-2C91-4D6C-8028-ACEA0954D987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24F60CC3-2C91-4D6C-8028-ACEA0954D987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24F60CC3-2C91-4D6C-8028-ACEA0954D987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{970828CF-466E-43ED-9127-E8F1578FD234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970828CF-466E-43ED-9127-E8F1578FD234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970828CF-466E-43ED-9127-E8F1578FD234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970828CF-466E-43ED-9127-E8F1578FD234}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

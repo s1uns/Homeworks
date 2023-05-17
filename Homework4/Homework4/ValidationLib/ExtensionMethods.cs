@@ -1,5 +1,6 @@
-﻿using FluentValidation;
+﻿
 using System.Reflection;
+using ValidationLib.Interfaces;
 
 namespace ValidationLib
 {
@@ -10,11 +11,12 @@ namespace ValidationLib
             var modelType = typeof(T);
             var assembly = Assembly.GetAssembly(modelType);
             var validatorType = assembly.GetTypes().FirstOrDefault(x => x.Name == String.Concat(modelType.Name, "Validator"));
-            var validator = (IValidator<T>)Activator.CreateInstance(validatorType);
-            var validation = validator.Validate(objectToValidate);
-            if (!validation.IsValid)
+            ConstructorInfo constructor = validatorType.GetConstructor(new[] { modelType });
+            var validator = (IValidator)constructor.Invoke(new object[] { objectToValidate} );
+            var validation = validator.Validate(objectToValidate, out Queue<string> errors);
+            if (!validation)
             {
-                foreach(var error in validation.Errors)
+                foreach(var error in errors)
                 {
                     Console.WriteLine($"There is an error: {error}");
                 }

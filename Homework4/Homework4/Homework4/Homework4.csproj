@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MapperLib\MapperLib.csproj" />
-    <ProjectReference Include="..\ValidationLib\ValidationLib.csproj" />
+    <ProjectReference Include="..\MyOwnVaidationLib\MyOwnValidationLib.csproj" />
   </ItemGroup>
 
 </Project>
