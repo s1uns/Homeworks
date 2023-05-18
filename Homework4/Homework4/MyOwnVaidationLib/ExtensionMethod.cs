@@ -21,9 +21,10 @@ namespace ValidationLib
             var validator = (IValidator<T>)constructor.Invoke(new object[] { objectToValidate });
             var validationResult = validator.Validate(objectToValidate);
             if (!validationResult.IsValid)
-            {
+            {   
                 foreach (var errorName in validationResult.Errors.Keys)
                 {
+                    Console.WriteLine($"An error occured while validating a field of the object: ");
                     Console.WriteLine($"{errorName}: ");
                     foreach(var error in validationResult.Errors[errorName])
                     {
@@ -34,7 +35,8 @@ namespace ValidationLib
             }
             else
             {
-                Console.WriteLine($"Validation of the object with {objectToValidate} type is successful");
+                Console.WriteLine($"Validation of the object is successful");
+                Console.WriteLine("-----------------------------------------");
             }
         }
     }
