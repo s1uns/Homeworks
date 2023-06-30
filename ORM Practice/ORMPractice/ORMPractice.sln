@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ORMPractice", "ORMPractice\ORMPractice.csproj", "{115EC721-CA37-409E-BB1C-5B202B378B02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapperLib", "..\..\Homeworks\Homework4\Homework4\MapperLib\MapperLib.csproj", "{8DA4FC0F-CD8B-4937-8B04-F4BAE97D483E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{115EC721-CA37-409E-BB1C-5B202B378B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{115EC721-CA37-409E-BB1C-5B202B378B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{115EC721-CA37-409E-BB1C-5B202B378B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{115EC721-CA37-409E-BB1C-5B202B378B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA4FC0F-CD8B-4937-8B04-F4BAE97D483E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA4FC0F-CD8B-4937-8B04-F4BAE97D483E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA4FC0F-CD8B-4937-8B04-F4BAE97D483E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA4FC0F-CD8B-4937-8B04-F4BAE97D483E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78A94E8E-8F8E-40BB-A13E-596B8A47BD9A}
+	EndGlobalSection
+EndGlobal
